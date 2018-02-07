@@ -1,11 +1,17 @@
 fileFormatVersion: 2
 guid: 82f1683c9ed95b441ad6c208bd06181e
-timeCreated: 1517874192
+timeCreated: 1517940874
 licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - DropPrefab: {fileID: 1529079407212236, guid: 0bb7843c837f4164490a9deeb3b24241,
+      type: 2}
+  - WallPrefab: {fileID: 1277531405417274, guid: 366d6bf38b66eac459b85a2173e849b7,
+      type: 2}
+  - OverlapPrefab: {fileID: 1993985761315992, guid: c2530e6af7a28d042ac41f5182f9772b,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
