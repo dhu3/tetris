@@ -13,16 +13,28 @@ public class main : MonoBehaviour {
 	public static float scale = 1f;
 
 	List<List<Collider>> rows = new List<List<Collider>>();
+	List<GameObject> drop = new List<GameObject> ();
 
 
 	// Use this for initialization
 	void Awake () {
-		
+		QualitySettings.vSyncCount = 0;  // VSync must be disabled
+		Application.targetFrameRate = 2;
+		CreateDrop ();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+		if (Input.GetKeyDown (KeyCode.A)) {
+			MoveDropLeft ();
+		} else if (Input.GetKeyDown (KeyCode.D)) {
+			MoveDropRight ();
+		} else if (Input.GetKeyDown (KeyCode.W)) {
+			MoveDropDown ();
+		} else if (Input.GetKeyDown (KeyCode.Space)) {
+			RotateDrop ();
+		}
+		MoveDropDown ();
 	}
 
 	void CreateDrop(int type, int rotation){
@@ -80,15 +92,80 @@ public class main : MonoBehaviour {
 
 		System.Random rng =new System.Random();
 		drop1.transform.RotateAround (new Vector3 (0, 20, 0), Vector3.forward, 90f * rng.Next (1, 3));
+
+		drop.Add (drop1);
+		drop.Add (drop2);
+		drop.Add (drop3);
+		drop.Add (drop4);
 	}
 
-	void CreateOverlaps(){
-		for (int j = 0; j < 12; j++) {
+	void ClearRows(){
+		for (int j = 0; j < 20; j++) {
+			
 			List<Collider> row = new List<Collider>();
-			for (int i = 0; i < 20; i++) {
-				Collider c = Physics.OverlapBox (new Vector3 (i, j, 0), new Vector3 (1, 1, 1));
-				row.Add (c);
+			int cl = 0;
+			for (int i = 0; i < 12; i++) {
+				Collider[] c = Physics.OverlapBox (new Vector3 (i, j, 0), new Vector3 (1, 1, 1));
+				cl = (c.Length > 0) ? cl : cl + 1;
+				row.Add (c [0]);
+			}
+
+			if (cl == 12) {
+				foreach (Collider k in row) {
+					Destroy(k.gameObject);
+				}
 			}
 		}
+	}
+		
+
+	void MoveDropLeft(){
+		int j = 0;
+		foreach (GameObject i in drop) {
+			if (i.transform.localPosition.x <= 0) {
+				j++;
+			}
+		}
+
+		if (j == 0) {
+			drop [0].transform.localPosition.x = drop [0].transform.localPosition.x - scale;
+		}
+	}
+
+	void MoveDropRight(){
+		int j = 0;
+		foreach (GameObject i in drop) {
+			if (i.transform.localPosition.x >= 20) {
+				j++;
+			}
+		}
+
+		if (j == 0) {
+			drop [0].transform.localPosition.x = drop [0].transform.localPosition.x + scale;
+		}
+	}
+
+	void MoveDropDown(){
+		int j = 0;
+		foreach (GameObject i in drop) {
+			if (Physics.Raycast(i.transform.localPosition, Vector3.down, 0.5*scale)) {
+				j++;
+			}
+		}
+
+		if (j == 0) {
+			drop [0].transform.localPosition.y = drop [0].transform.localPosition.y + scale;
+		} else {
+			foreach (GameObject k in drop) {
+				Rigidbody rb = k.GetComponent(Rigidbody);
+				rb.isKinematic = true;
+			}
+			drop.Clear();
+			CreateDrop ();
+		}
+	}
+
+	void RotateDrop(){
+		drop[0].transform.RotateAround (new Vector3 (0, 20, 0), Vector3.forward, 90f);
 	}
 }
