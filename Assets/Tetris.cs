@@ -6,7 +6,7 @@ using System;
 namespace Tetris {
 
 	public class Drop{
-		List<GameObject> form;
-		Vector3 COR;
+		public List<GameObject> form;
+		public Vector3 COR;
 	}
 }
