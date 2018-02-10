@@ -10,7 +10,7 @@ public class Main : MonoBehaviour {
 	public Collider OverlapPrefab;
 
 	public static float speed = 1f;
-	public static float scale = 1f;
+	public static float scale = 0.1f;
 	public static int	spx = 6;
 	public static int	spy = 20;
 
@@ -100,7 +100,7 @@ public class Main : MonoBehaviour {
 		joint1.connectedBody = (drop2.GetComponent(typeof(Rigidbody)) as Rigidbody);
 
 		System.Random rng =new System.Random();
-		drop1.transform.RotateAround (new Vector3 (0, 20, 0), Vector3.forward, 90f * rotation);
+		drop2.transform.RotateAround (drop2.transform.localPosition, drop2.transform.forward, Time.deltaTime*90f * rotation);
 
 		drop.Add (drop1);
 		drop.Add (drop2);
