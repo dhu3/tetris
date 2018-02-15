@@ -53,40 +53,40 @@ public class Main : MonoBehaviour {
 		GameObject drop4 = Instantiate (DropPrefab);
 
 		if (type == 0) {
-			drop1.transform.localPosition = new Vector3 (spx-1, spy, 0) * scale;
-			drop2.transform.localPosition = new Vector3 (spx, spy, 0) * scale;
-			drop3.transform.localPosition = new Vector3 (spx+1, spy, 0) * scale;
-			drop4.transform.localPosition = new Vector3 (spx+2, spy, 0) * scale;
+			drop1.transform.position = new Vector3 (spx-1, spy, 0) * scale;
+			drop2.transform.position = new Vector3 (spx, spy, 0) * scale;
+			drop3.transform.position = new Vector3 (spx+1, spy, 0) * scale;
+			drop4.transform.position = new Vector3 (spx+2, spy, 0) * scale;
 		} else if (type == 1) {
-			drop1.transform.localPosition = new Vector3 (spx, spy, 0) * scale;
-			drop2.transform.localPosition = new Vector3 (spx+1, spy, 0) * scale;
-			drop3.transform.localPosition = new Vector3 (spx, spy-1, 0) * scale;
-			drop4.transform.localPosition = new Vector3 (spx+1, spy-1, 0) * scale;
+			drop1.transform.position = new Vector3 (spx, spy, 0) * scale;
+			drop2.transform.position = new Vector3 (spx+1, spy, 0) * scale;
+			drop3.transform.position = new Vector3 (spx, spy-1, 0) * scale;
+			drop4.transform.position = new Vector3 (spx+1, spy-1, 0) * scale;
 		} else if (type == 2) {
-			drop1.transform.localPosition = new Vector3 (spx-1, spy, 0) * scale;
-			drop2.transform.localPosition = new Vector3 (spx, spy, 0) * scale;
-			drop3.transform.localPosition = new Vector3 (spx+1, spy, 0) * scale;
-			drop4.transform.localPosition = new Vector3 (spx-1, spy-1, 0) * scale;
+			drop1.transform.position = new Vector3 (spx-1, spy, 0) * scale;
+			drop2.transform.position = new Vector3 (spx, spy, 0) * scale;
+			drop3.transform.position = new Vector3 (spx+1, spy, 0) * scale;
+			drop4.transform.position = new Vector3 (spx-1, spy-1, 0) * scale;
 		} else if (type == 3) {
-			drop1.transform.localPosition = new Vector3 (spx-1, spy, 0) * scale;
-			drop2.transform.localPosition = new Vector3 (spx, spy, 0) * scale;
-			drop3.transform.localPosition = new Vector3 (spx+1, spy, 0) * scale;
-			drop4.transform.localPosition = new Vector3 (spx, spy, 0) * scale;
+			drop1.transform.position = new Vector3 (spx-1, spy, 0) * scale;
+			drop2.transform.position = new Vector3 (spx, spy, 0) * scale;
+			drop3.transform.position = new Vector3 (spx+1, spy, 0) * scale;
+			drop4.transform.position = new Vector3 (spx, spy, 0) * scale;
 		} else if (type == 4) {
-			drop1.transform.localPosition = new Vector3 (spx-1, spy, 0) * scale;
-			drop2.transform.localPosition = new Vector3 (spx, spy, 0) * scale;
-			drop3.transform.localPosition = new Vector3 (spx+1, spy, 0) * scale;
-			drop4.transform.localPosition = new Vector3 (spx+1, spy, 0) * scale;
+			drop1.transform.position = new Vector3 (spx-1, spy, 0) * scale;
+			drop2.transform.position = new Vector3 (spx, spy, 0) * scale;
+			drop3.transform.position = new Vector3 (spx+1, spy, 0) * scale;
+			drop4.transform.position = new Vector3 (spx+1, spy, 0) * scale;
 		} else if (type == 5) {
-			drop1.transform.localPosition = new Vector3 (spx-1, spy, 0) * scale;
-			drop2.transform.localPosition = new Vector3 (spx, spy, 0) * scale;
-			drop3.transform.localPosition = new Vector3 (spx, spy-1, 0) * scale;
-			drop4.transform.localPosition = new Vector3 (spx+1, spy-1, 0) * scale;
+			drop1.transform.position = new Vector3 (spx-1, spy, 0) * scale;
+			drop2.transform.position = new Vector3 (spx, spy, 0) * scale;
+			drop3.transform.position = new Vector3 (spx, spy-1, 0) * scale;
+			drop4.transform.position = new Vector3 (spx+1, spy-1, 0) * scale;
 		} else if (type == 6) {
-			drop1.transform.localPosition = new Vector3 (spx, spy, 0) * scale;
-			drop2.transform.localPosition = new Vector3 (spx+1, spy, 0) * scale;
-			drop3.transform.localPosition = new Vector3 (spx-1, spy-1, 0) * scale;
-			drop4.transform.localPosition = new Vector3 (spx, spy-1, 0) * scale;
+			drop1.transform.position = new Vector3 (spx, spy, 0) * scale;
+			drop2.transform.position = new Vector3 (spx+1, spy, 0) * scale;
+			drop3.transform.position = new Vector3 (spx-1, spy-1, 0) * scale;
+			drop4.transform.position = new Vector3 (spx, spy-1, 0) * scale;
 		}
 
 		drop1.transform.localScale = Vector3.one * scale;
@@ -94,13 +94,18 @@ public class Main : MonoBehaviour {
 		drop3.transform.localScale = Vector3.one * scale;
 		drop4.transform.localScale = Vector3.one * scale;
 
-		FixedJoint joint1 = drop1.AddComponent<FixedJoint>();
-		joint1.connectedBody = (drop2.GetComponent(typeof(Rigidbody)) as Rigidbody);
-		joint1.connectedBody = (drop2.GetComponent(typeof(Rigidbody)) as Rigidbody);
-		joint1.connectedBody = (drop2.GetComponent(typeof(Rigidbody)) as Rigidbody);
+//		FixedJoint joint1 = drop1.AddComponent<FixedJoint>();
+//		joint1.connectedBody = (drop2.GetComponent(typeof(Rigidbody)) as Rigidbody);
+//		joint1.connectedBody = (drop3.GetComponent(typeof(Rigidbody)) as Rigidbody);
+//		joint1.connectedBody = (drop4.GetComponent(typeof(Rigidbody)) as Rigidbody);
+
+		drop1.transform.parent = drop2.transform;
+		drop3.transform.parent = drop2.transform;
+		drop4.transform.parent = drop2.transform;
 
 		System.Random rng =new System.Random();
-		drop2.transform.RotateAround (drop2.transform.localPosition, drop2.transform.forward, Time.deltaTime*90f * rotation);
+		//drop2.transform.RotateAround (drop2.transform.position, drop2.transform.forward, Time.deltaTime*90f * rotation);
+		drop2.transform.localRotation = Quaternion.Euler(0f, 90f, 0f);
 
 		drop.Add (drop1);
 		drop.Add (drop2);
@@ -129,29 +134,29 @@ public class Main : MonoBehaviour {
 		
 
 	void MoveDropLeft(){
-		drop [0].transform.localPosition += new Vector3(-1, 0, 0)*scale;
+		drop [1].transform.position += new Vector3(-1, 0, 0)*scale;
 		if (!CheckOverlap()) {
-			drop [0].transform.localPosition += new Vector3(1, 0, 0)*scale;
+			drop [1].transform.position += new Vector3(1, 0, 0)*scale;
 		}
 	}
 
 	void MoveDropRight(){
-		drop [0].transform.localPosition += new Vector3(1, 0, 0)*scale;
+		drop [1].transform.position += new Vector3(1, 0, 0)*scale;
 		if (!CheckOverlap()) {
-			drop [0].transform.localPosition += new Vector3(-1, 0, 0)*scale;
+			drop [1].transform.position += new Vector3(-1, 0, 0)*scale;
 		}
 	}
 
 	void MoveDropDown(){
 		int j = 0;
 		foreach (GameObject i in drop) {
-			if (Physics.Raycast(i.transform.localPosition, Vector3.down, 0.5f*scale)) {
+			if (Physics.Raycast(i.transform.position, Vector3.down, 0.5f*scale)) {
 				j++;
 			}
 		}
 
 		if (j == 0) {
-			drop [0].transform.localPosition += new Vector3(0, -1, 0)*scale;
+			drop [1].transform.position += new Vector3(0, -1, 0)*scale;
 		} else {
 			foreach (GameObject k in drop) {
 				Rigidbody rb = k.GetComponent(typeof(Rigidbody)) as Rigidbody;
@@ -163,17 +168,17 @@ public class Main : MonoBehaviour {
 	}
 
 	void RotateDrop(){
-		drop[0].transform.RotateAround (drop[1].transform.localPosition, Vector3.forward, 90f);
+		drop[1].transform.RotateAround (drop[1].transform.position, Vector3.forward, 90f);
 
 		if (!CheckOverlap()) {
-			drop[0].transform.RotateAround (drop[1].transform.localPosition, Vector3.forward, -90f);
+			drop[1].transform.RotateAround (drop[1].transform.position, Vector3.forward, -90f);
 		}
 	}
 
 	bool CheckOverlap(){
 		int cl = 0;
 		foreach (GameObject i in drop) {
-			Collider[] c = Physics.OverlapBox (i.transform.localPosition, new Vector3 (1, 1, 1));
+			Collider[] c = Physics.OverlapBox (i.transform.position, new Vector3 (1, 1, 1));
 			cl = (c.Length > 1) ? cl : cl + 1;
 		}
 
