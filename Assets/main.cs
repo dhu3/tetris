@@ -4,6 +4,8 @@ using UnityEngine;
 using System.Linq;
 using System;
 using Tetris;
+using UnityEngine.SceneManagement;
+
 
 public class Main : MonoBehaviour {
 	public GameObject DropPrefab;
@@ -15,8 +17,9 @@ public class Main : MonoBehaviour {
 	public static int	spx = 6;
 	public static int	spy = 20;
 
-	List<List<Collider>> rows = new List<List<Collider>>();
+	//List<List<Collider>> rows = new List<List<Collider>>();
 	List<GameObject> drop = new List<GameObject> ();
+	List<GameObject> frozen = new List<GameObject> ();
 
 
 	// Use this for initialization
@@ -25,15 +28,15 @@ public class Main : MonoBehaviour {
 		//Application.targetFrameRate = 2;
 
 		GameObject WallS = Instantiate (WallPrefab);
-		WallS.transform.position = new Vector3 (6, 0, 0)*scale;
-		WallS.transform.localScale = new Vector3 (12, 1, 1)*scale;
+		WallS.transform.position = new Vector3 (6.5f, 0, 0)*scale;
+		WallS.transform.localScale = new Vector3 (14, 1, 1)*scale;
 
 		GameObject WallW = Instantiate (WallPrefab);
 		WallW.transform.position = new Vector3 (0, 10, 0)*scale;
 		WallW.transform.localScale = new Vector3 (1, 20, 1)*scale;
 
 		GameObject WallE = Instantiate (WallPrefab);
-		WallE.transform.position = new Vector3 (12, 10, 0)*scale;
+		WallE.transform.position = new Vector3 (13, 10, 0)*scale;
 		WallE.transform.localScale= new Vector3 (1,20,1)*scale;
 
 		CreateDrop ();
@@ -49,28 +52,32 @@ public class Main : MonoBehaviour {
 
 		if (Input.GetKeyDown (KeyCode.A)) {
 			MoveDropLeft ();
-			if (CheckOverlap) {
+			if (CheckOverlap()) {
 				MoveDropRight();
 			}
 		} else if (Input.GetKeyDown (KeyCode.D)) {
 			MoveDropRight ();
-			if (CheckOverlap) {
+			if (CheckOverlap()) {
 				MoveDropLeft();
 			}
 		} else if (Input.GetKeyDown (KeyCode.Space)) {
 			RotateDrop (1);
 		}
 
-		if (60 % (60 / speed)) {
+		int currentSpeed = Input.GetKey (KeyCode.S) ? speed * 10 : speed;
+
+		if ((frame % (60 / currentSpeed))==0) {
 			MoveDropDown ();
-			if (CheckOverlap) {
+			if (CheckOverlap()) {
 				MoveDropUp ();
 				foreach (GameObject k in drop) {
 					k.AddComponent<BoxCollider>();
+					frozen.Add (k);
 				}
 				drop.Clear();
 				CreateDrop ();
 			}
+			ClearRows ();
 		}
 
 		frame = (frame >= 60) ? 1 : frame;
@@ -80,10 +87,10 @@ public class Main : MonoBehaviour {
 		System.Random rng1 =new System.Random();
 		System.Random rng2 =new System.Random();
 
-		//int type=rng1.Next(0, 6);
-		int type = 0; 
-		//int rotation=rng2.Next(1, 3);
-		int rotation=1;
+		int type=rng1.Next(0, 6);
+		//int type = 0; 
+		int rotation=rng2.Next(1, 3);
+		//int rotation=1;
 
 		GameObject drop1 = Instantiate (DropPrefab);
 		GameObject drop2 = Instantiate (DropPrefab);
@@ -150,22 +157,54 @@ public class Main : MonoBehaviour {
 		//drop2.transform.localRotation = Quaternion.Euler(0f, 90f, 0f);
 		RotateDrop(rotation);
 
+		if (CheckOverlap()) {
+			SceneManager.LoadScene ("Tetris");
+		}
 	}
 
 	void ClearRows(){
-		for (int j = 0; j < 20; j++) {
+		int j = 0;
+		while (j < 20) {
 			
-			List<Collider> row = new List<Collider>();
-			int cl = 0;
-			for (int i = 0; i < 12; i++) {
-				Collider[] c = Physics.OverlapBox (new Vector3 (i, j, 0), new Vector3 (1, 1, 1));
-				cl = (c.Length > 0) ? cl : cl + 1;
-				row.Add (c [0]);
+			//List<Collider> row = new List<Collider>();
+			Collider[] cs = Physics.OverlapBox (new Vector3 (6.5f, j, 0)*scale, new Vector3 (5.5f, 0.1f, 1f)*scale);
+			//row.Add (c [0]);
+
+			if (cs.Length >= 12) {
+				foreach (Collider c in cs) {
+					frozen.Remove (c.gameObject);
+					Destroy(c.gameObject);
+				}
+				j--;
 			}
 
-			if (cl == 12) {
-				foreach (Collider k in row) {
+			foreach (GameObject f in frozen) {
+				if (f.transform.position.y > (j * scale)) {
+					f.transform.position += new Vector3(0, -1, 0)*scale;
+				}
+			}
+			j++;
+		}
+
+	}
+
+	void CheckGameOver(){
+		for (int j = 1; j < 20; j++) {
+
+			//List<Collider> row = new List<Collider>();
+			Collider[] c = Physics.OverlapBox (new Vector3 (6, j, 0)*scale, new Vector3 (4.5f, 0.1f, 1f)*scale);
+			//row.Add (c [0]);
+
+			if (c.Length == 12) {
+				foreach (Collider k in c) {
+					frozen.Remove (k.gameObject);
 					Destroy(k.gameObject);
+				}
+
+				foreach (GameObject f in frozen) {
+					if (f.transform.position.y > (j * scale)) {
+						f.transform.position += new Vector3(0, -1, 0)*scale;
+					}
 				}
 			}
 		}
@@ -212,12 +251,16 @@ public class Main : MonoBehaviour {
 	void RotateDrop(int r){
 		foreach (GameObject i  in drop) {
 			//float o = 2250 * Time.deltaTime * r;
-			i.transform.RotateAround (drop [1].transform.position, Vector3.forward, 45f*r);
+			if (i != drop [1]) {
+				i.transform.RotateAround (drop [1].transform.position, Vector3.forward, 90f * r);
+			}
 		}
 
 		if (CheckOverlap()) {
 			foreach (GameObject i  in drop) {
-				i.transform.RotateAround (drop [1].transform.position, Vector3.forward, 45f*r);
+				if (i != drop [1]) {
+					i.transform.RotateAround (drop [1].transform.position, Vector3.forward, -90f * r);
+				}
 			}
 		}
 	}
@@ -225,8 +268,8 @@ public class Main : MonoBehaviour {
 	bool CheckOverlap(){
 		int cl = 0;
 		foreach (GameObject i in drop) {
-			Collider[] c = Physics.OverlapBox (i.transform.position, new Vector3 (1, 1, 1)*scale);
-			cl = (c.Length > 0) ? cl : cl + 1;
+			Collider[] c = Physics.OverlapBox (i.transform.position, new Vector3 (0.1f, 0.1f, 0.1f)*scale);
+			cl = (c.Length > 0) ? cl+1 : cl;
 		}
 
 		return (cl > 0);
